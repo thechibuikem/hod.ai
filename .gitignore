@@ -1,0 +1,6 @@
+*lock*
+.env
+dist/
+build/
+node_modules/
+logs/

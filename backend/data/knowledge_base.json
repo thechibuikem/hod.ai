@@ -1,0 +1,17 @@
+[
+  {
+    "question": "What are the requirements to clear final year?",
+    "answer": "To clear final year, you must have completed all registered courses, submitted your final year project, paid all outstanding fees, and obtained clearance from the library and departmental secretary.",
+    "category": "Clearance"
+  },
+  {
+    "question": "How do I submit my final year project?",
+    "answer": "Submit three hardbound copies of your project to the departmental secretary along with a softcopy on a CD. Your supervisor must sign the submission form before you can submit.",
+    "category": "Project"
+  },
+  {
+    "question": "What is the minimum CGPA to graduate?",
+    "answer": "The minimum CGPA required to graduate is 1.00. However, a CGPA below 1.50 may result in withdrawal. A first class requires 4.50 and above.",
+    "category": "Graduation"
+  }
+]
