@@ -1,3 +1,19 @@
+/**
+ * test.ts - Manual testing script for the entire pipeline
+ * 
+ * This is NOT a unit test - it's a manual testing script to verify
+ * all the pipeline components work together.
+ * 
+ * Run with: npm run test
+ * 
+ * It tests each stage of the RAG pipeline:
+ * 1. Loading the knowledge base
+ * 2. Preprocessing a question
+ * 3. Creating embeddings
+ * 4. Generating an answer
+ * 
+ * If all stages pass, the system is working correctly!
+ */
 import 'dotenv/config';
 import { loadKnowledgeBase } from './utils/loader.ts';
 import { preprocess }        from './pipeline/preprocess.ts';

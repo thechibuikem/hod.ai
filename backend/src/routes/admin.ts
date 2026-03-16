@@ -1,3 +1,19 @@
+/**
+ * admin.ts - Admin-only endpoints for managing the system
+ * 
+ * These endpoints are protected (require admin authentication) and
+ * allow the HOD/admin to:
+ * 
+ * 1. Ingest knowledge base - Load questions and answers from the JSON file
+ *    and store them in ChromaDB (with embeddings)
+ * 2. View flagged answers - See all answers that students marked as wrong
+ * 
+ * These are "admin only" because regular students shouldn't be able to
+ * modify the knowledge base or see all flagged items.
+ * 
+ * POST /api/v1/admin/ingest - Load knowledge base into vector DB
+ * GET  /api/v1/admin/flags - Get all flagged answers for review
+ */
 import { Router }            from 'express';
 import { readFileSync, existsSync } from 'fs';
 import { adminAuth }         from '../middleware/adminAuth.ts';
@@ -8,6 +24,7 @@ const router = Router();
 const FLAGS_PATH = '../../logs/flags.json';
 
 // POST /api/v1/admin/ingest
+// Loads the knowledge base JSON file, creates embeddings, and stores in ChromaDB
 router.post('/admin/ingest', adminAuth, async (_req, res) => {
   try {
     const { inserted, skipped } = await ingestKnowledgeBase();
@@ -23,6 +40,7 @@ router.post('/admin/ingest', adminAuth, async (_req, res) => {
 });
 
 // GET /api/v1/admin/flags
+// Returns all answers that students have flagged as incorrect
 router.get('/admin/flags', adminAuth, (_req, res) => {
   const flags = existsSync(FLAGS_PATH)
     ? JSON.parse(readFileSync(FLAGS_PATH, 'utf-8'))

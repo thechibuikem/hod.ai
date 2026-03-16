@@ -1,3 +1,23 @@
+/**
+ * ask.ts - Main Q&A endpoint
+ * 
+ * This is the CORE endpoint where students ask questions. It orchestrates
+ * the entire RAG (Retrieval-Augmented Generation) pipeline:
+ * 
+ * 1. VALIDATE - Check that a question was provided
+ * 2. PREPROCESS - Clean the question (remove stopwords, etc.)
+ * 3. EMBED - Convert question to numbers using Gemini
+ * 4. SEARCH - Find similar questions in ChromaDB
+ * 5. GENERATE - Use AI to create an answer from the retrieved context
+ * 6. RESPOND - Send the answer back to the student
+ * 
+ * It also measures how long the whole process takes (response_time_ms)
+ * to help monitor performance.
+ * 
+ * POST /api/v1/ask
+ * Body: { "question": "What are graduation requirements?" }
+ * Returns: { "status": "success", "answer": "...", "sources": [...], "response_time_ms": 843 }
+ */
 import { Router }            from 'express';
 import { preprocess }        from '../pipeline/preprocess.ts';
 import { embed }             from '../pipeline/embed.ts';
@@ -8,15 +28,22 @@ import type { IVectorDB }    from '../utils/types.ts';
 
 const router = Router();
 
+// Store the vector DB instance (set by server.ts)
 let vectorDB: IVectorDB | null = null;
 
+// Allow server.ts to pass us the vector DB
 export function setVectorDB(db: IVectorDB) {
   vectorDB = db;
 }
 
+/**
+ * POST /api/v1/ask
+ * Ask a question and get an AI-generated answer
+ */
 router.post('/ask', async (req, res) => {
   const { question } = req.body;
 
+  // Step 1: Validate input
   if (!question || typeof question !== 'string' || question.trim() === '') {
     return sendError(res, 400, 'MISSING_QUESTION', 'question field is required.');
   }
@@ -25,14 +52,19 @@ router.post('/ask', async (req, res) => {
     return sendError(res, 503, 'DB_NOT_READY', 'Vector database is not configured yet.');
   }
 
-  const start = Date.now();
+  const start = Date.now(); // Start timing
 
   try {
+    // Step 2: Preprocess the question (clean it)
     const Qp             = preprocess(question);
+    // Step 3: Convert to embedding (numbers)
     const Qpe            = await embed(Qp);
+    // Step 4: Search the knowledge base
     const topK           = parseInt(process.env.TOP_K_RESULTS ?? '3');
     const { sources, context } = await searchAndRetrieve(vectorDB, Qpe, topK);
+    // Step 5: Generate answer using AI
     const answer         = await generate(question, context);
+    // Calculate how long it took
     const response_time_ms = Date.now() - start;
 
     return sendSuccess(res, 200, { answer, sources, response_time_ms });
@@ -40,6 +72,7 @@ router.post('/ask', async (req, res) => {
   } catch (err: any) {
     const message = err.message ?? 'Unknown error';
 
+    // Handle specific error types with helpful messages
     if (message === 'EMBEDDING_FAILED') return sendError(res, 500, 'EMBEDDING_FAILED', 'Failed to process your question.');
     if (message === 'NO_RESULTS')       return sendError(res, 404, 'NO_RESULTS', 'No relevant information found. Please contact the HOD directly.');
     if (message === 'LLM_FAILED')       return sendError(res, 500, 'LLM_FAILED', 'Failed to generate a response.');
