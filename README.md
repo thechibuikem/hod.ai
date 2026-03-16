@@ -116,7 +116,7 @@ The system **does not replace official administrative decisions** and will not h
 
 The system follows a **Retrieval-Augmented Generation (RAG)** architecture.
 
-![System Architecture](public/architecture.png)
+![System Architecture](backend/architecture.png)
 
 ---
 
@@ -137,7 +137,7 @@ Data is structured in **JSON format**:
   {
     "question": "Where do I submit clearance documents?",
     "answer": "Departmental academic office or designated submission point.",
-    "context": "Clearance"
+    "category": "Clearance"
   },
 ```
 
@@ -296,11 +296,12 @@ Confirms that the server and vector database are operational.
 hod-qa-backend/
 │
 ├── src/
-│   ├── index.ts
+│   ├── server.ts
 │   ├── routes/
 │   │   ├── ask.ts
 │   │   ├── flag.ts
-│   │   └── admin.ts
+│   │   ├── admin.ts
+│   │   └── health.ts
 │   │
 │   ├── pipeline/
 │   │   ├── preprocess.ts
@@ -308,17 +309,18 @@ hod-qa-backend/
 │   │   ├── search.ts
 │   │   └── generate.ts
 │   │
-│   └── vectordb/
-│       ├── chroma.ts
-│       ├── supabase.ts
-│       └── qdrant.ts
+│   ├── vectordb/
+│   │   ├── chroma.ts
+│   │   └── ingest.ts
+│   │
+│   └── utils/
+│       ├── logger.ts
+│       ├── loader.ts
+│       ├── types.ts
+│       └── response.ts
 │
 ├── data/
-│   └── knowledge_base.csv
-│
-├── logs/
-│   ├── query_log.json
-│   └── flags.json
+│   └── knowledge_base.json
 │
 ├── .env
 ├── package.json

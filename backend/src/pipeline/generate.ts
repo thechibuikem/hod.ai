@@ -1,6 +1,13 @@
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+let ai: GoogleGenAI | null = null;
+
+function getClient(): GoogleGenAI {
+  if (!ai) {
+    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY! });
+  }
+  return ai;
+}
 
 const SYSTEM_PROMPT = `You are an academic assistant for the Department of Computer Science,
 Nnamdi Azikiwe University. Answer student questions ONLY using the context provided below.
@@ -9,8 +16,8 @@ Do not guess or invent information.`;
 
 export async function generate(question: string, context: string): Promise<string> {
   try {
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+    const response = await getClient().models.generateContent({
+      model: 'gemini-2.0-flash',
       contents: `CONTEXT:\n${context}\n\nQUESTION:\n${question}`,
       config: {
         systemInstruction: SYSTEM_PROMPT,
