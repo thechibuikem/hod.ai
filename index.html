@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HOD Q&A — CSC Department, UNIZIK</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --cream: #f7f3ee;
+        --cream-dark: #ede7dc;
+        --ink: #1c1a17;
+        --ink-soft: #4a4640;
+        --ink-muted: #8a8278;
+        --gold: #b8860b;
+        --gold-light: #f5edd6;
+        --gold-border: #d4a843;
+        --green: #2d6a4f;
+        --green-light: #d8f0e6;
+        --red-light: #fde8e8;
+        --red: #b91c1c;
+        --border: rgba(28, 26, 23, 0.12);
+        --shadow: 0 2px 12px rgba(28, 26, 23, 0.08);
+        --shadow-lg: 0 8px 32px rgba(28, 26, 23, 0.12);
+        --radius: 10px;
+        --radius-lg: 16px;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* ── HEADER ── */
+      header {
+        background: var(--ink);
+        padding: 0 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .header-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .header-crest {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--gold-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: "Lora", serif;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--ink);
+      }
+      .header-title {
+        font-family: "Lora", serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: #fff;
+        line-height: 1.2;
+      }
+      .header-subtitle {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+        font-weight: 300;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .header-badge {
+        font-size: 11px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.6);
+        padding: 4px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.03em;
+      }
+
+      /* ── HERO ── */
+      .hero {
+        background: var(--ink);
+        padding: 3rem 2rem 4rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          rgba(255, 255, 255, 0.03) 39px,
+          rgba(255, 255, 255, 0.03) 40px
+        );
+        pointer-events: none;
+      }
+      .hero-eyebrow {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold-border);
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
+      .hero h1 {
+        font-family: "Lora", serif;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
+        font-weight: 600;
+        color: #fff;
+        line-height: 1.25;
+        max-width: 560px;
+        margin: 0 auto 1rem;
+      }
+      .hero h1 em {
+        font-style: italic;
+        color: var(--gold-border);
+      }
+      .hero p {
+        font-size: 15px;
+        color: rgba(255, 255, 255, 0.5);
+        max-width: 420px;
+        margin: 0 auto;
+        font-weight: 300;
+        line-height: 1.7;
+      }
+
+      /* ── SEARCH CARD ── */
+      .search-wrapper {
+        max-width: 720px;
+        margin: -28px auto 0;
+        padding: 0 1.5rem;
+        position: relative;
+        z-index: 10;
+      }
+      .search-card {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--border);
+        padding: 1.5rem;
+      }
+      .search-label {
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 0.6rem;
+        display: block;
+      }
+      .search-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+      }
+      .search-input {
+        flex: 1;
+        font-family: "DM Sans", sans-serif;
+        font-size: 15px;
+        color: var(--ink);
+        background: var(--cream);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        resize: none;
+        height: 52px;
+        transition:
+          border-color 0.2s,
+          height 0.2s;
+        outline: none;
+        line-height: 1.5;
+      }
+      .search-input:focus {
+        border-color: var(--gold-border);
+        background: #fff;
+        height: 96px;
+      }
+      .search-input::placeholder {
+        color: var(--ink-muted);
+      }
+      .search-btn {
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        background: var(--ink);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        padding: 0 1.25rem;
+        height: 52px;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          background 0.2s,
+          transform 0.1s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .search-btn:hover {
+        background: #2e2b26;
+      }
+      .search-btn:active {
+        transform: scale(0.97);
+      }
+      .search-btn:disabled {
+        background: var(--ink-muted);
+        cursor: not-allowed;
+        transform: none;
+      }
+      .search-btn svg {
+        width: 16px;
+        height: 16px;
+      }
+      .search-hint {
+        font-size: 12px;
+        color: var(--ink-muted);
+        margin-top: 0.75rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .hint-chip {
+        cursor: pointer;
+        padding: 3px 10px;
+        background: var(--cream);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        transition:
+          border-color 0.15s,
+          background 0.15s;
+        font-size: 12px;
+        color: var(--ink-soft);
+      }
+      .hint-chip:hover {
+        border-color: var(--gold-border);
+        background: var(--gold-light);
+        color: var(--gold);
+      }
+
+      /* ── MAIN CONTENT ── */
+      .main {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem 4rem;
+        width: 100%;
+        flex: 1;
+      }
+
+      /* ── LOADING ── */
+      .loading {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        padding: 1.5rem;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        margin-bottom: 1.5rem;
+      }
+      .loading.visible {
+        display: flex;
+      }
+      .loading-dots {
+        display: flex;
+        gap: 5px;
+      }
+      .loading-dots span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--gold-border);
+        animation: bounce 1.2s ease-in-out infinite;
+      }
+      .loading-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loading-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        40% {
+          transform: translateY(-6px);
+          opacity: 1;
+        }
+      }
+      .loading-text {
+        font-size: 14px;
+        color: var(--ink-muted);
+        font-style: italic;
+      }
+
+      /* ── ANSWER CARD ── */
+      .answer-card {
+        display: none;
+        background: #fff;
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+        animation: slideUp 0.3s ease;
+      }
+      .answer-card.visible {
+        display: block;
+      }
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .answer-header {
+        padding: 1rem 1.25rem 0.75rem;
+        border-bottom: 1px solid var(--cream-dark);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .answer-tag {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--green);
+        background: var(--green-light);
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+      .answer-time {
+        font-size: 11px;
+        color: var(--ink-muted);
+      }
+      .answer-body {
+        padding: 1.25rem;
+      }
+      .answer-question {
+        font-family: "Lora", serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--ink);
+        margin-bottom: 1rem;
+        line-height: 1.45;
+      }
+      .answer-question::before {
+        content: "Q: ";
+        color: var(--gold-border);
+      }
+      .answer-text {
+        font-size: 15px;
+        line-height: 1.75;
+        color: var(--ink-soft);
+      }
+      .answer-footer {
+        padding: 0.75rem 1.25rem;
+        background: var(--cream);
+        border-top: 1px solid var(--cream-dark);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .flag-btn {
+        font-family: "DM Sans", sans-serif;
+        font-size: 12px;
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 12px;
+        cursor: pointer;
+        color: var(--ink-muted);
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .flag-btn:hover {
+        border-color: var(--red);
+        color: var(--red);
+        background: var(--red-light);
+      }
+      .flag-btn.flagged {
+        border-color: var(--red);
+        color: var(--red);
+        background: var(--red-light);
+      }
+      .answer-meta {
+        font-size: 12px;
+        color: var(--ink-muted);
+      }
+
+      /* ── SOURCES ── */
+      .sources-section {
+        display: none;
+        margin-bottom: 1.5rem;
+        animation: slideUp 0.3s ease 0.1s both;
+      }
+      .sources-section.visible {
+        display: block;
+      }
+      .sources-heading {
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 0.6rem;
+        padding: 0 0.25rem;
+      }
+      .sources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .source-item {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      .source-question {
+        font-size: 13px;
+        color: var(--ink-soft);
+        line-height: 1.5;
+        flex: 1;
+      }
+      .source-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .source-category {
+        font-size: 11px;
+        background: var(--gold-light);
+        color: var(--gold);
+        padding: 2px 8px;
+        border-radius: 20px;
+        font-weight: 500;
+        border: 1px solid rgba(184, 134, 11, 0.2);
+      }
+      .source-score {
+        font-size: 11px;
+        color: var(--ink-muted);
+        font-variant-numeric: tabular-nums;
+      }
+
+      /* ── FLAG MODAL ── */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(28, 26, 23, 0.5);
+        z-index: 200;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+      }
+      .modal-overlay.visible {
+        display: flex;
+      }
+      .modal {
+        background: #fff;
+        border-radius: var(--radius-lg);
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: var(--shadow-lg);
+        animation: slideUp 0.2s ease;
+      }
+      .modal h3 {
+        font-family: "Lora", serif;
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+      }
+      .modal p {
+        font-size: 13px;
+        color: var(--ink-muted);
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+      }
+      .modal label {
+        display: block;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        margin-bottom: 0.4rem;
+      }
+      .modal textarea {
+        width: 100%;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 0.75rem;
+        resize: none;
+        height: 90px;
+        background: var(--cream);
+        color: var(--ink);
+        outline: none;
+        transition: border-color 0.2s;
+        margin-bottom: 1rem;
+      }
+      .modal textarea:focus {
+        border-color: var(--gold-border);
+        background: #fff;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+      }
+      .btn-cancel {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        background: none;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 8px 16px;
+        cursor: pointer;
+        color: var(--ink-soft);
+        transition: background 0.15s;
+      }
+      .btn-cancel:hover {
+        background: var(--cream);
+      }
+      .btn-submit {
+        font-family: "DM Sans", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        background: var(--ink);
+        color: #fff;
+        border: none;
+        border-radius: var(--radius);
+        padding: 8px 20px;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .btn-submit:hover {
+        background: #2e2b26;
+      }
+
+      /* ── EMPTY STATE ── */
+      .empty-state {
+        text-align: center;
+        padding: 3rem 1rem;
+      }
+      .empty-icon {
+        width: 56px;
+        height: 56px;
+        background: var(--cream-dark);
+        border-radius: 50%;
+        margin: 0 auto 1.25rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .empty-icon svg {
+        width: 24px;
+        height: 24px;
+        opacity: 0.4;
+      }
+      .empty-state h3 {
+        font-family: "Lora", serif;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        color: var(--ink);
+      }
+      .empty-state p {
+        font-size: 14px;
+        color: var(--ink-muted);
+        line-height: 1.7;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+
+      /* ── ERROR ── */
+      .error-banner {
+        display: none;
+        background: var(--red-light);
+        border: 1px solid rgba(185, 28, 28, 0.2);
+        border-radius: var(--radius);
+        padding: 0.75rem 1rem;
+        font-size: 13px;
+        color: var(--red);
+        margin-bottom: 1.5rem;
+        animation: slideUp 0.2s ease;
+      }
+      .error-banner.visible {
+        display: block;
+      }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(12px);
+        background: var(--ink);
+        color: #fff;
+        font-size: 13px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        opacity: 0;
+        transition:
+          opacity 0.2s,
+          transform 0.2s;
+        z-index: 300;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+      .toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--ink);
+        color: rgba(255, 255, 255, 0.3);
+        text-align: center;
+        padding: 1.25rem;
+        font-size: 12px;
+        letter-spacing: 0.03em;
+      }
+
+      @media (max-width: 520px) {
+        .search-row {
+          flex-direction: column;
+        }
+        .search-btn {
+          width: 100%;
+          justify-content: center;
+        }
+        header {
+          padding: 0 1rem;
+        }
+        .header-badge {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-brand">
+        <div class="header-crest">CS</div>
+        <div>
+          <div class="header-title">Department of Computer Science</div>
+          <div class="header-subtitle">Nnamdi Azikiwe University, Awka</div>
+        </div>
+      </div>
+      <div class="header-badge">AI-Powered Q&A</div>
+    </header>
+
+    <div class="hero">
+      <div class="hero-eyebrow">
+        CSC 309 — Artificial Intelligence · Group 8
+      </div>
+      <h1>Ask the <em>Department</em><br />anything, instantly.</h1>
+      <p>
+        Get verified answers on graduation, clearance, projects, and
+        registration — without waiting 90 minutes for the HOD.
+      </p>
+    </div>
+
+    <div class="search-wrapper">
+      <div class="search-card">
+        <label class="search-label" for="question-input">Your question</label>
+        <div class="search-row">
+          <textarea
+            id="question-input"
+            class="search-input"
+            placeholder="e.g. What are the requirements to clear final year?"
+            rows="1"
+          ></textarea>
+          <button class="search-btn" id="ask-btn">
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <line x1="2" y1="8" x2="14" y2="8" />
+              <polyline points="9,3 14,8 9,13" />
+            </svg>
+            Ask
+          </button>
+        </div>
+        <div class="search-hint">
+          <span>Try:</span>
+          <span class="hint-chip" onclick="fillQuestion(this)"
+            >Clearance requirements</span
+          >
+          <span class="hint-chip" onclick="fillQuestion(this)"
+            >Project submission deadline</span
+          >
+          <span class="hint-chip" onclick="fillQuestion(this)"
+            >Minimum CGPA to graduate</span
+          >
+          <span class="hint-chip" onclick="fillQuestion(this)"
+            >Carry-over course policy</span
+          >
+        </div>
+      </div>
+    </div>
+
+    <main class="main">
+      <div class="loading" id="loading">
+        <div class="loading-dots"><span></span><span></span><span></span></div>
+        <span class="loading-text">Searching the knowledge base...</span>
+      </div>
+
+      <div class="error-banner" id="error-banner"></div>
+
+      <div class="answer-card" id="answer-card">
+        <div class="answer-header">
+          <span class="answer-tag" id="answer-tag">Answer</span>
+          <span class="answer-time" id="answer-time"></span>
+        </div>
+        <div class="answer-body">
+          <div class="answer-question" id="answer-question"></div>
+          <div class="answer-text" id="answer-text"></div>
+        </div>
+        <div class="answer-footer">
+          <button class="flag-btn" id="flag-btn">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 3h10l-2 4 2 4H3V3z" />
+              <line x1="3" y1="15" x2="3" y2="3" />
+            </svg>
+            Flag this answer
+          </button>
+          <span class="answer-meta" id="answer-meta"></span>
+        </div>
+      </div>
+
+      <div class="sources-section" id="sources-section">
+        <div class="sources-heading">Retrieved sources</div>
+        <div class="sources-list" id="sources-list"></div>
+      </div>
+
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <h3>Ask a question</h3>
+        <p>
+          Type your question above or tap one of the quick suggestions to get
+          started.
+        </p>
+      </div>
+    </main>
+
+    <!-- Flag Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal">
+        <h3>Flag this answer</h3>
+        <p>
+          Let the HOD know if this answer seems incorrect, incomplete, or
+          outdated. It will be reviewed and updated.
+        </p>
+        <label for="flag-reason">Reason</label>
+        <textarea
+          id="flag-reason"
+          placeholder="e.g. The deadline mentioned here seems outdated..."
+        ></textarea>
+        <div class="modal-actions">
+          <button class="btn-cancel" id="modal-cancel">Cancel</button>
+          <button class="btn-submit" id="modal-submit">Submit flag</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <footer>
+      &copy; 2024 Department of Computer Science, UNIZIK &nbsp;·&nbsp; CSC 309
+      Group 8 &nbsp;·&nbsp; AI-Powered HOD Q&amp;A System
+    </footer>
+
+    <script>
+      const API_BASE = "http://localhost:3001/api/v1";
+
+      const input = document.getElementById("question-input");
+      const askBtn = document.getElementById("ask-btn");
+      const loading = document.getElementById("loading");
+      const errorBanner = document.getElementById("error-banner");
+      const answerCard = document.getElementById("answer-card");
+      const answerTag = document.getElementById("answer-tag");
+      const answerTime = document.getElementById("answer-time");
+      const answerQ = document.getElementById("answer-question");
+      const answerText = document.getElementById("answer-text");
+      const answerMeta = document.getElementById("answer-meta");
+      const flagBtn = document.getElementById("flag-btn");
+      const sourcesSection = document.getElementById("sources-section");
+      const sourcesList = document.getElementById("sources-list");
+      const emptyState = document.getElementById("empty-state");
+      const modalOverlay = document.getElementById("modal-overlay");
+      const flagReason = document.getElementById("flag-reason");
+      const modalCancel = document.getElementById("modal-cancel");
+      const modalSubmit = document.getElementById("modal-submit");
+      const toast = document.getElementById("toast");
+
+      let currentQuestion = "";
+      let currentAnswer = "";
+      let hasResult = false;
+
+      function showToast(msg, duration = 3000) {
+        toast.textContent = msg;
+        toast.classList.add("visible");
+        setTimeout(() => toast.classList.remove("visible"), duration);
+      }
+
+      function setLoading(on) {
+        loading.classList.toggle("visible", on);
+        askBtn.disabled = on;
+        askBtn.textContent = on ? "Asking..." : "";
+        if (!on) {
+          askBtn.innerHTML = `
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="16" height="16">
+            <line x1="2" y1="8" x2="14" y2="8"/>
+            <polyline points="9,3 14,8 9,13"/>
+          </svg>
+          Ask`;
+        }
+      }
+
+      function showError(msg) {
+        errorBanner.textContent = msg;
+        errorBanner.classList.add("visible");
+      }
+
+      function clearError() {
+        errorBanner.classList.remove("visible");
+      }
+
+      function fillQuestion(chip) {
+        input.value = chip.textContent.trim();
+        input.focus();
+      }
+
+      async function askQuestion() {
+        const q = input.value.trim();
+        if (!q) {
+          input.focus();
+          return;
+        }
+
+        currentQuestion = q;
+        clearError();
+        setLoading(true);
+        answerCard.classList.remove("visible");
+        sourcesSection.classList.remove("visible");
+        emptyState.style.display = "none";
+        flagBtn.classList.remove("flagged");
+        flagBtn.textContent = "";
+        flagBtn.innerHTML = `
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3h10l-2 4 2 4H3V3z"/>
+          <line x1="3" y1="15" x2="3" y2="3"/>
+        </svg>
+        Flag this answer`;
+
+        try {
+          const res = await fetch(`${API_BASE}/ask`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: q }),
+          });
+          const data = await res.json();
+
+          if (!res.ok) {
+            throw new Error(
+              data.message || "Something went wrong. Please try again.",
+            );
+          }
+
+          currentAnswer = data.answer;
+
+          // Populate answer card
+          answerQ.textContent = q;
+          answerText.textContent = data.answer;
+          answerTime.textContent = new Date().toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          answerMeta.textContent = `${(data.response_time_ms / 1000).toFixed(2)}s response time`;
+          answerTag.textContent = "Answer";
+          answerCard.classList.add("visible");
+
+          // Populate sources
+          if (data.sources && data.sources.length > 0) {
+            sourcesList.innerHTML = data.sources
+              .map(
+                (s) => `
+            <div class="source-item">
+              <div class="source-question">${escapeHtml(s.question)}</div>
+              <div class="source-right">
+                <span class="source-category">${escapeHtml(s.category)}</span>
+                <span class="source-score">${(s.score * 100).toFixed(0)}% match</span>
+              </div>
+            </div>
+          `,
+              )
+              .join("");
+            sourcesSection.classList.add("visible");
+          }
+
+          hasResult = true;
+        } catch (err) {
+          showError(
+            err.message ||
+              "Could not reach the server. Make sure the backend is running.",
+          );
+          emptyState.style.display = "";
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function escapeHtml(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      // Ask on button click or Enter
+      askBtn.addEventListener("click", askQuestion);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          askQuestion();
+        }
+      });
+
+      // Flag modal
+      flagBtn.addEventListener("click", () => {
+        if (!hasResult) return;
+        flagReason.value = "";
+        modalOverlay.classList.add("visible");
+        setTimeout(() => flagReason.focus(), 50);
+      });
+
+      modalCancel.addEventListener("click", () => {
+        modalOverlay.classList.remove("visible");
+      });
+
+      modalOverlay.addEventListener("click", (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove("visible");
+      });
+
+      modalSubmit.addEventListener("click", async () => {
+        const reason = flagReason.value.trim();
+        if (!reason) {
+          flagReason.style.borderColor = "var(--red)";
+          flagReason.focus();
+          return;
+        }
+
+        flagReason.style.borderColor = "";
+        modalSubmit.textContent = "Submitting...";
+        modalSubmit.disabled = true;
+
+        try {
+          const res = await fetch(`${API_BASE}/flag`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              question: currentQuestion,
+              answer: currentAnswer,
+              reason,
+            }),
+          });
+          const data = await res.json();
+
+          if (!res.ok)
+            throw new Error(data.message || "Flag submission failed.");
+
+          // Close modal first, then show feedback after transition clears
+          modalOverlay.classList.remove("visible");
+
+          flagBtn.classList.add("flagged");
+          flagBtn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 3h10l-2 4 2 4H3V3z"/>
+        <line x1="3" y1="15" x2="3" y2="3"/>
+      </svg>
+      Flagged for review`;
+
+          setTimeout(
+            () => showToast("Flagged successfully. The HOD will review it."),
+            200,
+          );
+        } catch (err) {
+          // Keep modal open on error so user doesn't lose their reason text
+          showToast(err.message || "Could not submit flag. Please try again.");
+        } finally {
+          modalSubmit.textContent = "Submit flag";
+          modalSubmit.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>

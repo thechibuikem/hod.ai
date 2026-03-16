@@ -9,9 +9,14 @@ import { ChromaDB } from './vectordb/chroma.ts';
 
 const app  = express();
 const PORT = process.env.PORT ?? 3001;
+const cors_origin = process.env.CORS_ORIGIN ?? "http://localhost:5500";
 
-app.use(cors({ origin: process.env.CORS_ORIGIN, methods: ['GET', 'POST'], allowedHeaders: ['Content-Type', 'X-Admin-Key'] }));
 app.use(express.json());
+app.use(cors({
+  origin: [cors_origin, 'null'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'X-Admin-Key']
+}));
 
 // Wire up the vector DB into the ask route
 const db = new ChromaDB();
