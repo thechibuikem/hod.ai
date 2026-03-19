@@ -22,7 +22,7 @@ import { Router }            from 'express';
 import { preprocess }        from '../pipeline/preprocess.ts';
 import { embed }             from '../pipeline/embed.ts';
 import { searchAndRetrieve } from '../pipeline/search.ts';
-import { generate }          from '../pipeline/generate.ts';
+import { generate, GenerationError } from '../pipeline/generate.ts';
 import { sendSuccess, sendError } from '../utils/response.ts';
 import type { IVectorDB }    from '../utils/types.ts';
 
@@ -69,15 +69,41 @@ router.post('/ask', async (req, res) => {
 
     return sendSuccess(res, 200, { answer, sources, response_time_ms });
 
-  } catch (err: any) {
-    const message = err.message ?? 'Unknown error';
+  } catch (err: unknown) {
+    // Handle GenerationError with specific error codes
+    if (err instanceof GenerationError) {
+      console.error(`[ask] GenerationError: ${err.code} - ${err.message}`);
+
+      switch (err.code) {
+        case 'RATE_LIMIT_EXCEEDED':
+          // Return 429 with retry information
+          return sendError(res, 429, 'RATE_LIMIT_EXCEEDED', err.message);
+
+        case 'API_KEY_INVALID':
+          // Return 500 for configuration errors
+          return sendError(res, 500, 'API_KEY_INVALID', err.message);
+
+        case 'LLM_EMPTY_RESPONSE':
+          return sendError(res, 500, 'LLM_EMPTY_RESPONSE', err.message);
+
+        case 'LLM_TIMEOUT':
+          return sendError(res, 504, 'LLM_TIMEOUT', err.message);
+
+        case 'LLM_FAILED':
+        default:
+          return sendError(res, 500, 'LLM_FAILED', err.message);
+      }
+    }
+
+    // Handle other error types
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[ask] Unexpected error:', message);
 
     // Handle specific error types with helpful messages
     if (message === 'EMBEDDING_FAILED') return sendError(res, 500, 'EMBEDDING_FAILED', 'Failed to process your question.');
     if (message === 'NO_RESULTS')       return sendError(res, 404, 'NO_RESULTS', 'No relevant information found. Please contact the HOD directly.');
-    if (message === 'LLM_FAILED')       return sendError(res, 500, 'LLM_FAILED', 'Failed to generate a response.');
 
-    return sendError(res, 500, 'INTERNAL_ERROR', 'Something went wrong.');
+    return sendError(res, 500, 'INTERNAL_ERROR', 'Something went wrong. Please try again.');
   }
 });
 

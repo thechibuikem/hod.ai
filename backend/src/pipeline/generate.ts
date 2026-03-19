@@ -31,6 +31,83 @@ Nnamdi Azikiwe University. Answer student questions ONLY using the context provi
 If the answer is not in the context, say: "I don't have that information. Please contact the HOD directly."
 Do not guess or invent information.`;
 
+// Custom error class to preserve error details
+export class GenerationError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public retryAfter?: number
+  ) {
+    super(message);
+    this.name = 'GenerationError';
+  }
+}
+
+/**
+ * Parses Gemini API errors and returns structured error info
+ */
+function parseGeminiError(err: unknown): GenerationError {
+  // Handle string errors
+  if (typeof err === 'string') {
+    return new GenerationError(err, 'LLM_FAILED');
+  }
+
+  // Handle Error objects
+  if (err instanceof Error) {
+    const message = err.message ?? '';
+
+    // Check for rate limit errors (429)
+    if (message.includes('429') || message.includes('RESOURCE_EXHAUSTED') || message.includes('quota')) {
+      // Try to extract retry delay from the error message
+      const delayMatch = message.match(/retry in ([\d.]+)s/i);
+      const retryAfter = delayMatch?.[1] ? Math.ceil(parseFloat(delayMatch[1])) : 60;
+      return new GenerationError(
+        `Rate limit exceeded. Please try again in ${retryAfter} seconds.`,
+        'RATE_LIMIT_EXCEEDED',
+        retryAfter
+      );
+    }
+
+    // Check for API key issues
+    if (message.includes('API_KEY') || message.includes('permission') || message.includes('PERMISSION_DENIED')) {
+      return new GenerationError(
+        'AI service configuration error. Please contact the administrator.',
+        'API_KEY_INVALID'
+      );
+    }
+
+    // Check for empty response
+    if (message.includes('Empty response')) {
+      return new GenerationError(
+        'The AI returned an empty response. Please try again.',
+        'LLM_EMPTY_RESPONSE'
+      );
+    }
+
+    // Check for timeout
+    if (message.includes('timeout') || message.includes('TIMEOUT')) {
+      return new GenerationError(
+        'The request timed out. Please try again.',
+        'LLM_TIMEOUT'
+      );
+    }
+
+    // Generic error
+    console.error('Unhandled Gemini error:', message);
+    return new GenerationError(
+      'Failed to generate a response. Please try again.',
+      'LLM_FAILED'
+    );
+  }
+
+  // Unknown error type
+  console.error('Unknown error type:', err);
+  return new GenerationError(
+    'An unexpected error occurred.',
+    'LLM_FAILED'
+  );
+}
+
 /**
  * Generates an answer using Gemini AI
  * @param question - The student's question
@@ -57,7 +134,8 @@ export async function generate(question: string, context: string): Promise<strin
 
     return content;
   } catch (err) {
-    console.error('Generation failed:', err);
-    throw new Error('LLM_FAILED');
+    const genError = parseGeminiError(err);
+    console.error('Generation failed:', genError.message, '- Code:', genError.code);
+    throw genError;
   }
 }
